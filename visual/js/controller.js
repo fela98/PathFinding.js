@@ -91,7 +91,7 @@ var Controller = StateMachine.create({
 });
 
 $.extend(Controller, {
-    gridSize: [20, 7], // number of nodes horizontally and vertically
+    gridSize: [40, 10], // number of nodes horizontally and vertically
     operationsPerSecond: 300,
 
     /**
@@ -101,7 +101,7 @@ $.extend(Controller, {
         var numCols = this.gridSize[0],
             numRows = this.gridSize[1];
 
-        const terrain = 
+        const terrain1 = 
         [['m','m','m','m','m','f','f','f','f','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','f','f','f','m','m','m','m','m'],
         ['m','m','m','f','f','f','f','f','f','f','f','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','f','f','f','f','f','m','m','m','m'],
         ['m','m','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','r','f','f','f','f','f','f','m','m','m','m'],
@@ -113,8 +113,43 @@ $.extend(Controller, {
         ['m','m','f','f','f','f','f','f','f','f','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','f','f','f','f','m','m'],
         ['m','m','m','f','f','f','f','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','f','f','m','m']];
         
+        const terrain2 = 
+        [['f','f','f','f','f','f','f','f','f','f','g','g','g','r','g','g','g','g','g','g','g','r','g','g','g','g','f','f','f','f','f','f','f','r','r','f','f','f','f','f'],
+        ['f','f','f','f','f','f','f','f','f','g','g','g','r','r','g','g','g','g','g','g','r','r','g','g','f','f','f','f','f','f','f','f','r','r','f','f','f','f','f','f'],
+        ['f','f','f','f','f','f','g','g','g','g','g','r','r','g','g','g','g','g','g','r','r','g','g','g','f','f','f','f','r','r','r','r','r','f','f','f','f','f','f','f'],
+        ['g','g','g','g','g','g','g','g','g','g','g','r','g','g','g','g','r','r','r','r','g','g','g','f','f','f','f','r','r','f','f','f','f','f','f','f','f','f','f','f'],
+        ['g','g','g','g','g','r','r','r','r','r','r','r','r','r','r','r','r','g','g','g','g','g','f','f','f','f','r','r','f','f','f','f','f','f','f','f','f','f','f','f'],
+        ['g','g','g','g','r','r','g','g','g','g','g','r','g','g','g','g','g','g','g','g','f','f','f','f','f','f','r','f','f','f','f','f','f','f','f','f','f','f','f','f'],
+        ['g','g','g','r','r','g','g','g','g','g','g','r','r','g','g','g','g','g','g','f','f','f','f','r','r','r','r','r','r','f','f','f','f','f','f','f','f','f','f','f'],
+        ['g','g','r','r','g','g','g','f','f','g','g','g','r','r','r','r','g','g','f','f','r','r','r','r','f','r','f','f','r','r','r','r','r','f','f','f','f','f','f','f'],
+        ['g','g','r','g','g','f','f','f','f','f','f','f','f','f','f','r','r','r','r','r','r','f','f','f','f','r','f','f','f','f','f','f','r','r','f','f','f','f','f','f'],
+        ['g','g','r','g','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','r','f','f','f','f','f','f','f','r','r','f','f','f','f','f']];
+
+        const terrain3 =
+        [['g','g','g','g','g','g','g','g','g','w','w','w','g','g','g','g','g','m','m','m','m','m','m','m','m','m','m','m','r','r','r','r','r','r','r','m','m','m','m','m'],
+        ['g','g','g','g','g','g','g','g','g','w','w','w','w','g','g','g','g','m','m','m','m','m','m','m','m','m','m','m','m','m','m','m','m','m','r','m','g','g','g','g'],
+        ['g','g','g','g','g','g','g','g','g','g','w','w','w','w','g','g','g','g','m','m','m','m','m','m','m','m','m','m','m','m','m','m','g','g','r','g','g','g','g','g'],
+        ['f','f','g','g','g','g','g','g','g','g','g','w','w','w','w','g','g','g','g','m','m','m','m','m','m','m','m','m','g','g','g','g','g','g','r','r','g','g','g','g'],
+        ['f','f','g','g','g','g','g','g','g','g','g','g','w','w','w','w','w','w','w','w','w','w','w','w','w','g','g','g','g','g','g','g','g','g','g','r','r','r','r','r'],
+        ['f','f','f','f','g','g','g','g','g','g','g','g','g','g','w','w','w','w','w','w','w','w','w','w','w','w','w','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+        ['f','f','f','f','f','f','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','w','w','w','w','w','w','g','g','g','g','g','g','m','m','m','m','m'],
+        ['f','f','f','f','f','f','f','f','f','f','f','g','g','g','g','g','g','g','g','g','m','m','m','m','m','m','w','w','w','w','m','m','m','m','m','m','m','m','m','m'],
+        ['f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','m','m','m','m','m','m','m','m','m','m','m','m','m','w','w','w','m','m','m','m','m','m','m','m','m'],
+        ['f','f','f','f','f','f','f','f','f','f','m','m','m','m','m','m','m','m','m','m','m','m','m','m','m','m','m','m','w','w','w','m','m','m','m','m','m','m','m','m']];
+
+        const terrain4 = 
+        [['w','w','w','w','w','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','r','r','r','r','r'],
+        ['w','w','w','w','w','w','w','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','w','w','w','w','w','g','r','r','g','g','g','g'],
+        ['w','w','w','w','w','w','w','w','w','w','w','g','g','g','g','g','g','g','g','g','g','g','w','w','w','w','w','w','w','w','w','w','w','w','r','w','g','g','g','g'],
+        ['w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','r','w','w','w','w','w'],
+        ['w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','r','w','w','w','w','w'],
+        ['w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','r','r','w','w','w','w','w'],
+        ['w','w','w','w','w','w','w','w','g','g','g','g','g','g','g','g','g','g','g','w','w','w','w','w','w','w','w','w','w','w','w','w','w','r','w','w','w','w','w','w'],
+        ['w','w','w','w','g','g','g','g','g','g','f','f','f','f','f','f','g','g','g','g','g','g','g','g','g','w','w','w','w','w','w','w','w','r','w','w','w','w','w','w'],
+        ['w','w','g','g','g','g','f','f','f','f','f','f','f','f','f','f','f','f','f','f','g','g','g','g','g','g','g','g','g','g','g','g','r','r','g','w','w','w','w','w'],
+        ['w','g','g','g','f','f','f','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','g','g','g','g','g','g','g']];
         
-        const cost = terrain.map((row) => {
+        const cost = terrain1.map((row) => {
             return row.map((cell) => {
                 switch(cell) {
                     case 'w':
@@ -131,9 +166,15 @@ $.extend(Controller, {
             });
         });
 
+        const matrix = cost.map((row) => {
+            return row.map((cell) => {
+                return 0;
+            });
+        })
+
         console.log(cost);
 
-        var grid = this.grid = new PF.Grid(numCols, numRows, undefined, cost);
+        var grid = this.grid = new PF.Grid(numCols, numRows, matrix, cost);
 
         View.init({
             numCols: numCols,

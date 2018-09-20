@@ -6,19 +6,19 @@ var View = {
     nodeSize: 30, // width and height of a single node, in pixel
     nodeStyle: {
         normal: {
-            fill: '#ba6f00',
+            fill: 'orange',
         },
         water: {
-
+            fill: 'blue',
         },
         mountain: {
-
+            fill: 'grey'
         },
         forest: {
-
+            fill: 'forestgreen'
         },
         grassland: {
-
+            fill: 'lime'
         },
         blocked: {
             fill: 'grey',
@@ -30,10 +30,10 @@ var View = {
             fill: '#e40',
         },
         opened: {
-            //fill: '#98fb98',
+            fill: '#98fb98',
         },
         closed: {
-            //fill: '#afeeee',
+            fill: '#afeeee',
         },
         failed: {
             fill: '#ff8888',
@@ -73,7 +73,7 @@ var View = {
             normalStyle, nodeSize,
             createRowTask, sleep, tasks,
             nodeSize    = this.nodeSize,
-            normalStyle = this.nodeStyle.normal,
+            nodeStyle   = this.nodeStyle,
             numCols     = this.numCols,
             numRows     = this.numRows,
             paper       = this.paper,
@@ -90,10 +90,27 @@ var View = {
                     y = rowId * nodeSize;
 
                     rect = paper.rect(x, y, nodeSize, nodeSize);
-                
 
+                    var style;
 
-                    rect.attr(normalStyle);
+                    switch(grid.nodes[rowId][j].cost) {
+                        case 100:
+                            style = nodeStyle.water;
+                            break;
+                        case 50:
+                            style = nodeStyle.mountain;
+                            break;
+                        case 10:
+                            style = nodeStyle.forest;
+                            break;
+                        case 5:
+                            style = nodeStyle.grassland;
+                            break;
+                        default:
+                            style = nodeStyle.normal;
+                    }
+                    
+                    rect.attr(style);
                     rects[rowId].push(rect);
                 }
                 $stats.text(
@@ -155,20 +172,21 @@ var View = {
      */
     setAttributeAt: function(gridX, gridY, attr, value) {
         var color, nodeStyle = this.nodeStyle;
+        const rect = this.rects[gridY][gridX];
         switch (attr) {
         case 'walkable':
             color = value ? nodeStyle.normal.fill : nodeStyle.blocked.fill;
             this.setWalkableAt(gridX, gridY, value);
             break;
-        /*case 'opened':
-            this.colorizeNode(this.rects[gridY][gridX], nodeStyle.opened.fill);
+        case 'opened':
+            this.opacifyNode(rect, 0.6);
             this.setCoordDirty(gridX, gridY, true);
             break;
         case 'closed':
-            this.colorizeNode(this.rects[gridY][gridX], nodeStyle.closed.fill);
+            this.opacifyNode(rect, 0.2);
             this.setCoordDirty(gridX, gridY, true);
             break;
-        case 'tested':
+        /*case 'tested':
             color = (value === true) ? nodeStyle.tested.fill : nodeStyle.normal.fill;
 
             this.colorizeNode(this.rects[gridY][gridX], color);
@@ -188,6 +206,13 @@ var View = {
             fill: color
         }, this.nodeColorizeEffect.duration);
     },
+
+    opacifyNode: function(node, opacity) {
+        node.animate({
+            opacity
+        }, this.nodeColorizeEffect.duration);
+    },
+
     zoomNode: function(node) {
         node.toFront().attr({
             transform: this.nodeZoomEffect.transform,
