@@ -91,7 +91,7 @@ var Controller = StateMachine.create({
 });
 
 $.extend(Controller, {
-    gridSize: [64, 36], // number of nodes horizontally and vertically
+    gridSize: [20, 7], // number of nodes horizontally and vertically
     operationsPerSecond: 300,
 
     /**
@@ -463,23 +463,9 @@ $.extend(Controller, {
      * It will detect user's display size, and compute the best positions.
      */
     setDefaultStartEndPos: function() {
-        var width, height,
-            marginRight, availWidth,
-            centerX, centerY,
-            endX, endY,
-            nodeSize = View.nodeSize;
 
-        width  = $(window).width();
-        height = $(window).height();
-
-        marginRight = $('#algorithm_panel').width();
-        availWidth = width - marginRight;
-
-        centerX = Math.ceil(availWidth / 2 / nodeSize);
-        centerY = Math.floor(height / 2 / nodeSize);
-
-        this.setStartPos(centerX - 5, centerY);
-        this.setEndPos(centerX + 5, centerY);
+        this.setStartPos(Math.floor(this.gridSize[0]/2)-5, Math.floor(this.gridSize[1]/2));
+        this.setEndPos(Math.floor(this.gridSize[0]/2)+5, Math.floor(this.gridSize[1]/2));
     },
     setStartPos: function(gridX, gridY) {
         this.startX = gridX;
