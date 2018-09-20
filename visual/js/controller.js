@@ -101,13 +101,45 @@ $.extend(Controller, {
         var numCols = this.gridSize[0],
             numRows = this.gridSize[1];
 
-        this.grid = new PF.Grid(numCols, numRows);
+        const terrain = 
+        [['m','m','m','m','m','f','f','f','f','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','f','f','f','m','m','m','m','m'],
+        ['m','m','m','f','f','f','f','f','f','f','f','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','f','f','f','f','f','m','m','m','m'],
+        ['m','m','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','r','f','f','f','f','f','f','m','m','m','m'],
+        ['m','m','f','f','f','f','f','f','f','f','f','f','f','f','f','w','w','w','w','w','f','f','f','f','f','f','f','f','f','r','f','f','f','f','f','f','f','m','m','m'],
+        ['m','f','f','f','f','f','f','f','f','f','f','f','f','f','w','w','w','w','w','w','w','f','f','f','f','f','f','f','f','r','f','f','f','f','f','f','m','m','m','m'],
+        ['m','m','f','f','f','f','f','f','f','f','f','f','f','f','w','w','w','w','w','w','w','f','f','r','r','r','r','r','r','r','r','r','r','r','r','r','m','m','m','m'],
+        ['m','m','m','f','f','f','f','f','f','f','f','f','f','f','f','w','w','w','w','w','f','f','f','f','f','f','f','f','f','f','f','f','r','f','f','f','f','m','m','m'],
+        ['m','m','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','r','f','f','f','f','f','m','m'],
+        ['m','m','f','f','f','f','f','f','f','f','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','f','f','f','f','m','m'],
+        ['m','m','m','f','f','f','f','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','f','f','m','m']];
+        
+        
+        const cost = terrain.map((row) => {
+            return row.map((cell) => {
+                switch(cell) {
+                    case 'w':
+                        return 100;
+                    case 'm':
+                        return 50;
+                    case 'f':
+                        return 10;
+                    case 'g':
+                        return 5;
+                    case 'r':
+                        return 1;
+                }
+            });
+        });
+
+        console.log(cost);
+
+        var grid = this.grid = new PF.Grid(numCols, numRows, undefined, cost);
 
         View.init({
             numCols: numCols,
             numRows: numRows
         });
-        View.generateGrid(function() {
+        View.generateGrid(grid, function() {
             Controller.setDefaultStartEndPos();
             Controller.bindEvents();
             Controller.transition(); // transit to the next state (ready)

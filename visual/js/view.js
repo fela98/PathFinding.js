@@ -6,36 +6,40 @@ var View = {
     nodeSize: 30, // width and height of a single node, in pixel
     nodeStyle: {
         normal: {
-            fill: 'white',
-            'stroke-opacity': 0.2, // the border
+            fill: '#ba6f00',
+        },
+        water: {
+
+        },
+        mountain: {
+
+        },
+        forest: {
+
+        },
+        grassland: {
+
         },
         blocked: {
             fill: 'grey',
-            'stroke-opacity': 0.2,
         },
         start: {
             fill: '#0d0',
-            'stroke-opacity': 0.2,
         },
         end: {
             fill: '#e40',
-            'stroke-opacity': 0.2,
         },
         opened: {
-            fill: '#98fb98',
-            'stroke-opacity': 0.2,
+            //fill: '#98fb98',
         },
         closed: {
-            fill: '#afeeee',
-            'stroke-opacity': 0.2,
+            //fill: '#afeeee',
         },
         failed: {
             fill: '#ff8888',
-            'stroke-opacity': 0.2,
         },
         tested: {
             fill: '#e5e5e5',
-            'stroke-opacity': 0.2,
         },
     },
     nodeColorizeEffect: {
@@ -63,7 +67,7 @@ var View = {
      * Therefore, in order to not to block the rendering of browser ui,
      * I decomposed the task into smaller ones. Each will only generate a row.
      */
-    generateGrid: function(callback) {
+    generateGrid: function(grid, callback) {
         var i, j, x, y,
             rect,
             normalStyle, nodeSize,
@@ -86,6 +90,9 @@ var View = {
                     y = rowId * nodeSize;
 
                     rect = paper.rect(x, y, nodeSize, nodeSize);
+                
+
+
                     rect.attr(normalStyle);
                     rects[rowId].push(rect);
                 }
@@ -153,7 +160,7 @@ var View = {
             color = value ? nodeStyle.normal.fill : nodeStyle.blocked.fill;
             this.setWalkableAt(gridX, gridY, value);
             break;
-        case 'opened':
+        /*case 'opened':
             this.colorizeNode(this.rects[gridY][gridX], nodeStyle.opened.fill);
             this.setCoordDirty(gridX, gridY, true);
             break;
@@ -166,7 +173,7 @@ var View = {
 
             this.colorizeNode(this.rects[gridY][gridX], color);
             this.setCoordDirty(gridX, gridY, true);
-            break;
+            break;*/
         case 'parent':
             // XXX: Maybe draw a line from this node to its parent?
             // This would be expensive.
